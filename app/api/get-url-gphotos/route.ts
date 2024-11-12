@@ -30,6 +30,6 @@ export async function GET(request: NextRequest) {
   const decodedUrl = decodeURIComponent(encodedUrl);
   const images = await getImagesFromPage(decodedUrl);
   return NextResponse.json(
-    images.map((img) => img.split("=")[0] + "=w0-h0-no"),
+    images.map((img) => img.split("=")[0] + "=s0"),
   );
 }
