@@ -23,7 +23,10 @@ async function getImagesFromPage(url: string) {
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const encodedUrl = searchParams.get("url")!;
+  const encodedUrl = searchParams.get("url");
+  if (!encodedUrl) {
+    return NextResponse.json({ error: "Không có URL được cung cấp" });
+  }
   const decodedUrl = decodeURIComponent(encodedUrl);
   const images = await getImagesFromPage(decodedUrl);
   return NextResponse.json(
