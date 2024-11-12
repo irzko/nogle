@@ -23,7 +23,7 @@ async function getImagesFromPage(url: string) {
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const encodedUrl = searchParams.get("url");
+  const encodedUrl = searchParams.get("url")!;
   const decodedUrl = decodeURIComponent(encodedUrl);
   const images = await getImagesFromPage(decodedUrl);
   return NextResponse.json(
