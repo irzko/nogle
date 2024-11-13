@@ -3,7 +3,7 @@ import imaps, { ImapSimpleOptions } from "imap-simple";
 import axios from "axios";
 import { find } from "lodash-es";
 
-const getAccessToken = (refreshToken: string) => {
+const getAccessToken = async (refreshToken: string) => {
   const response = await axios.post(
     "https://login.microsoftonline.com/common/oauth2/v2.0/token",
     new URLSearchParams({
