@@ -5,19 +5,22 @@ import { find } from "lodash-es";
 
 const getAccessToken = async (refreshToken: string) => {
   const response = await axios.post(
-    "https://login.microsoftonline.com/common/oauth2/v2.0/token",
-    new URLSearchParams({
-      client_id: "b1062a92-931a-4d71-beb6-7741d2f4b743",
+    "https://login.microsoftonline.com/6c91ba10-6213-4663-89fd-c8556e98f798/oauth2/v2.0/token",
+
+    {
+      client_id: process.env.CLIENT_ID,
+      scope:
+        "email Mail.Read Mail.Read.Shared Mail.ReadBasic User.Read profile openid",
+      client_secret: process.env.CLIENT_SECRET,
       grant_type: "refresh_token",
       refresh_token: refreshToken,
-    }),
+    },
   );
   return response.data.access_token;
 };
 
 const readMailGraph = async (accessToken: string) => {
-  const response = await axios.get(
-    "https://graph.microsoft.com/v1.0/me/messages",
+  const response = await axios.get("https://graph.microsoft.com/v1.0/me/messages",
     {
       headers: {
         Authorization: accessToken,
