@@ -7,14 +7,15 @@ const getAccessToken = async (refreshToken: string) => {
   const response = await axios.post(
     "https://login.microsoftonline.com/6c91ba10-6213-4663-89fd-c8556e98f798/oauth2/v2.0/token",
 
-    {
-      client_id: process.env.CLIENT_ID,
+    new URLSearchParams({
+      client_id: process.env.CLIENT_ID!,
       scope:
-        "email Mail.Read Mail.Read.Shared Mail.ReadBasic User.Read profile openid",
-      client_secret: process.env.CLIENT_SECRET,
+        "b1062a92-931a-4d71-beb6-7741d2f4b743%2f.default openid profile offline_access",
+      
+      client_secret: process.env.CLIENT_SECRET!,
       grant_type: "refresh_token",
       refresh_token: refreshToken,
-    },
+    }),
   );
   return response.data.access_token;
 };
