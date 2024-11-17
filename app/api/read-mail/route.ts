@@ -6,22 +6,18 @@ import { find } from "lodash-es";
 const getAccessToken = async (refreshToken: string, clientId: string) => {
   const response = await axios.post(
     "https://login.microsoftonline.com/common/oauth2/v2.0/token",
-    {
-      headers: {
-    "Content-Type": "application/x-www-form-urlencoded",
-  },
-      body: JSON.stringify ({
+    new URLSearchParams({
       client_id: clientId,
       refresh_token: refreshToken,
-      grant_type: "refresh_token"})
-    }
-    
+      grant_type: "refresh_token",
+    }),
   );
   return response.data.access_token;
 };
 
 const readMailGraph = async (accessToken: string) => {
-  const response = await axios.get("https://graph.microsoft.com/v1.0/me/messages",
+  const response = await axios.get(
+    "https://graph.microsoft.com/v1.0/me/messages",
     {
       headers: {
         Authorization: accessToken,
