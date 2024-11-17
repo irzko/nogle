@@ -78,9 +78,9 @@ export async function GET(req: NextRequest) {
   const scopeType = searchParams.get("scopeType") || "IMAP";
   const clientId = searchParams.get("clientId");
 
-  if (!email || !password || !refreshToken) {
+  if (!email || !password || !refreshToken || !clientId) {
     return NextResponse.json({
-      error: "Missing email, password, or refreshToken",
+      error: "Missing required parameters",
     });
   }
   const accessToken = await getAccessToken(refreshToken, clientId);
