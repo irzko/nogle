@@ -3,19 +3,19 @@ import imaps, { ImapSimpleOptions } from "imap-simple";
 import axios from "axios";
 import { find } from "lodash-es";
 
-const getAccessToken = async (refreshToken: string) => {
+const getAccessToken = async (refreshToken: string, clientId: string) => {
   const response = await axios.post(
-    "https://login.microsoftonline.com/6c91ba10-6213-4663-89fd-c8556e98f798/oauth2/v2.0/token",
-
-    new URLSearchParams({
-      client_id: process.env.CLIENT_ID!,
-      scope:
-        "b1062a92-931a-4d71-beb6-7741d2f4b743%2f.default openid profile offline_access",
-      
-      client_secret: process.env.CLIENT_SECRET!,
-      grant_type: "refresh_token",
+    "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+    {
+      headers: {
+    "Content-Type": "application/x-www-form-urlencoded",
+  },
+      body: JSON.stringify ({
+      client_id: clientId,
       refresh_token: refreshToken,
-    }),
+      grant_type: "refresh_token"})
+    }
+    
   );
   return response.data.access_token;
 };
@@ -80,13 +80,14 @@ export async function GET(req: NextRequest) {
   const password = searchParams.get("pwd");
   const refreshToken = searchParams.get("refreshToken");
   const scopeType = searchParams.get("scopeType") || "IMAP";
+  const clientId = searchParams.get("clientId");
 
   if (!email || !password || !refreshToken) {
     return NextResponse.json({
       error: "Missing email, password, or refreshToken",
     });
   }
-  const accessToken = await getAccessToken(refreshToken);
+  const accessToken = await getAccessToken(refreshToken, clientId);
 
   if (scopeType == "GRAPH") {
     await readMailGraph(accessToken);
