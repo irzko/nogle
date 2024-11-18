@@ -7,7 +7,7 @@ interface EmailData {
   from: string | null;
   date: Date | null;
   text: string | null;
-  html: string | null;
+  // html: string | null;
 }
 
 const getAllMailImap = async (
@@ -65,7 +65,7 @@ const getAllMailImap = async (
           from: parsedEmail.from?.text || null,
           date: parsedEmail.date || null,
           text: parsedEmail.text || null,
-          html: parsedEmail.html || null,
+          //html: parsedEmail.html || null,
         };
         emailsData.push(emailData);
       } catch (err) {
