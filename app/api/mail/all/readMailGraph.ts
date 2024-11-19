@@ -1,9 +1,8 @@
-import axios from "axios";
-
 const readMailGraph = async (accessToken: string) => {
-  const response = await axios.get(
+  const response = await fetch(
     "https://graph.microsoft.com/v1.0/me/messages",
     {
+      method: "POST",
       headers: {
         Authorization: accessToken,
       },
